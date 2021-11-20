@@ -38,15 +38,15 @@ class ItemController extends AdminController
         })->sortable();
         $grid->column('name', __('Name'))->filter('like');
         $grid->column('rarity', __('Rarity'))->sortable()->filter('like');
-        $grid->column('luck', __('Luck'))->sortable();
-        $grid->column('stealth', __('Stealth'))->sortable();
-        $grid->column('level', __('Level'))->sortable();
-        $grid->column('healthy', __('Healthy'))->sortable();
-        $grid->column('wishdom', __('Wishdom'))->sortable();
-        $grid->column('size', __('Size'))->sortable();
+        $grid->column('luck', __('Luck'))->sortable()->filter('range');
+        $grid->column('stealth', __('Stealth'))->sortable()->filter('range');
+        $grid->column('level', __('Level'))->sortable()->filter('range');
+        $grid->column('healthy', __('Healthy'))->sortable()->filter('range');
+        $grid->column('wishdom', __('Wishdom'))->sortable()->filter('range');
+        $grid->column('size', __('Size'))->sortable()->filter('range');
         $grid->column('race', __('Race'))->sortable()->filter('like');
-        $grid->column('courage', __('Courage'))->sortable();
-        $grid->column('score', __('Score'))->sortable();
+        $grid->column('courage', __('Courage'))->sortable()->filter('range');
+        $grid->column('score', __('Score'))->sortable()->filter('range');
         $grid->column('highest_price', __('highest price'))->display(function ($title) {
             return number_format($title);
         });
