@@ -37,14 +37,24 @@ class ItemController extends AdminController
             return "<span class='label label-success'><a target='_blank' href='https://market.radiocaca.com/#/market-place/".$item."' style='color:white'>".$item."</a></span>";
         })->sortable();
         $grid->column('name', __('Name'))->filter('like');
-        $grid->column('rarity', __('Rarity'))->sortable()->filter('like');
+        $grid->column('rarity', __('Rarity'))->filter([
+            'N' => 'N',
+            'R' => 'R',
+            'SR' => 'SR'
+        ]);
         $grid->column('luck', __('Luck'))->sortable()->filter('range');
         $grid->column('stealth', __('Stealth'))->sortable()->filter('range');
         $grid->column('level', __('Level'))->sortable()->filter('range');
         $grid->column('healthy', __('Healthy'))->sortable()->filter('range');
         $grid->column('wishdom', __('Wishdom'))->sortable()->filter('range');
         $grid->column('size', __('Size'))->sortable()->filter('range');
-        $grid->column('race', __('Race'))->sortable()->filter('like');
+        $grid->column('race', __('Race'))->filter([
+            'orc' => 'orc',
+            'spirit' => 'spirit',
+            'demon' => 'demon',
+            'dwarf' => 'dwarf',
+            'naga' => 'naga'
+        ]);
         $grid->column('courage', __('Courage'))->sortable()->filter('range');
         $grid->column('score', __('Score'))->sortable()->filter('range');
         $grid->column('highest_price', __('highest price'))->display(function ($title) {
