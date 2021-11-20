@@ -50,6 +50,11 @@ class ItemController extends AdminController
         $grid->column('highest_price', __('highest price'))->display(function ($title) {
             return number_format($title);
         });
+        $grid->disableCreateButton();
+        $grid->actions(function ($actions) {
+            $actions->disableDelete();
+            $actions->disableEdit();
+        });
         $grid->model()->orderBy('fixed_price');
 
         return $grid;
