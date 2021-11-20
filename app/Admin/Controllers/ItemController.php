@@ -32,7 +32,7 @@ class ItemController extends AdminController
         $grid->column('token_id', __('Token id'))->filter('like');
         $grid->column('fixed_price', __('Fixed price'))->display(function ($title) {
             return number_format($title);
-        })->sortable();
+        })->sortable()->filter('range');
         $grid->id('Mua')->display(function($item){
             return "<span class='label label-success'><a target='_blank' href='https://market.radiocaca.com/#/market-place/".$item."' style='color:white'>".$item."</a></span>";
         })->sortable();
