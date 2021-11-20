@@ -29,22 +29,22 @@ class ItemController extends AdminController
         $grid->column('status', __('Status'));
         $grid->column('start_time', __('Start time'));
         $grid->column('image_url', __('Image url'))->image("",50,50);
-        $grid->column('token_id', __('Token id'));
+        $grid->column('token_id', __('Token id'))->filter('like');
         $grid->column('fixed_price', __('Fixed price'))->display(function ($title) {
             return number_format($title);
         })->sortable();
         $grid->id('Mua')->display(function($item){
             return "<span class='label label-success'><a target='_blank' href='https://market.radiocaca.com/#/market-place/".$item."' style='color:white'>".$item."</a></span>";
         })->sortable();
-        $grid->column('name', __('Name'));
-        $grid->column('rarity', __('Rarity'))->sortable();
+        $grid->column('name', __('Name'))->filter('like');
+        $grid->column('rarity', __('Rarity'))->sortable()->filter('like');
         $grid->column('luck', __('Luck'))->sortable();
         $grid->column('stealth', __('Stealth'))->sortable();
         $grid->column('level', __('Level'))->sortable();
         $grid->column('healthy', __('Healthy'))->sortable();
         $grid->column('wishdom', __('Wishdom'))->sortable();
         $grid->column('size', __('Size'))->sortable();
-        $grid->column('race', __('Race'))->sortable();
+        $grid->column('race', __('Race'))->sortable()->filter('like');
         $grid->column('courage', __('Courage'))->sortable();
         $grid->column('score', __('Score'))->sortable();
         $grid->column('highest_price', __('highest price'))->display(function ($title) {
