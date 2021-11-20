@@ -34,7 +34,7 @@ class ItemController extends AdminController
             return number_format($title);
         })->sortable();
         $grid->id('Mua')->display(function($item){
-            return "<span class='label label-success'><a href='https://market.radiocaca.com/#/market-place/".$item."' style='color:white'>".$item."</a></span>";
+            return "<span class='label label-success'><a target='_blank' href='https://market.radiocaca.com/#/market-place/".$item."' style='color:white'>".$item."</a></span>";
         })->sortable();
         $grid->column('name', __('Name'));
         $grid->column('rarity', __('Rarity'))->sortable();
