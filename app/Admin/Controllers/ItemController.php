@@ -26,17 +26,17 @@ class ItemController extends AdminController
     {
         $grid = new Grid(new Item());
 
-        $grid->column('status', __('Status'));
-        $grid->column('start_time', __('Start time'));
-        $grid->column('image_url', __('Image url'))->image("",50,50);
         $grid->column('token_id', __('Token id'))->filter('like');
+        $grid->column('image_url', __('Image url'))->image("",50,50);
         $grid->column('fixed_price', __('Fixed price'))->display(function ($title) {
             return number_format($title);
         })->sortable()->filter('range');
         $grid->id('Mua')->display(function($item){
-            return "<span class='label label-success'><a target='_blank' href='https://market.radiocaca.com/#/market-place/".$item."' style='color:white'>".$item."</a></span>";
-        })->sortable();
-        $grid->column('name', __('Name'))->filter('like');
+            return "<span class='label label-success'><a target='_blank' href='https://market.radiocaca.com/#/market-place/".$item."' style='color:white'>Mua</a></span>";
+        });
+        $grid->column('name', __('Name'))->display(function () {
+            return "Metamon #".$this->token_id;
+        })->filter('like')->sortable();
         $grid->column('rarity', __('Rarity'))->filter([
             'N' => 'N',
             'R' => 'R',
@@ -60,6 +60,8 @@ class ItemController extends AdminController
         $grid->column('highest_price', __('highest price'))->display(function ($title) {
             return number_format($title);
         });
+        $grid->column('start_time', __('Start time'));
+        $grid->column('status', __('Status'));
         $grid->disableCreateButton();
         $grid->actions(function ($actions) {
             $actions->disableDelete();
