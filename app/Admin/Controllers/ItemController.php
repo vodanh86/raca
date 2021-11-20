@@ -22,14 +22,27 @@ class ItemController extends AdminController
      *
      * @return Grid
      */
+    protected function getPrice(){
+        $url = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=radio-caca';
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_HTTPGET, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response_json = curl_exec($ch);
+        curl_close($ch);
+        return json_decode($response_json, true)[0]["current_price"];
+    }
     protected function grid()
     {
+        $price = $this->getPrice();
         $grid = new Grid(new Item());
 
         $grid->column('token_id', __('Token id'))->filter('like');
         $grid->column('image_url', __('Image url'))->image("",50,50);
-        $grid->column('fixed_price', __('Fixed price'))->display(function ($title) {
+        $grid->column('fixed_price', __('Price (RACA)'))->display(function ($title) {
             return number_format($title);
+        })->sortable()->filter('range');
+        $grid->column('highest_price', __('Price (USD)'))->display(function () use($price) {
+            return number_format($price * $this->fixed_price)." $";
         })->sortable()->filter('range');
         $grid->id('Mua')->display(function($item){
             return "<span class='label label-success'><a target='_blank' href='https://market.radiocaca.com/#/market-place/".$item."' style='color:white'>Mua</a></span>";
@@ -57,10 +70,9 @@ class ItemController extends AdminController
         ]);
         $grid->column('courage', __('Courage'))->sortable()->filter('range');
         $grid->column('score', __('Score'))->sortable()->filter('range');
-        $grid->column('highest_price', __('highest price'))->display(function ($title) {
-            return number_format($title);
-        });
-        $grid->column('start_time', __('Start time'));
+        $grid->column('start_time', __('Rate'))->display(function () {
+            return round($this->score * 1000.0 /$this->fixed_price, 3);
+        })->sortable()->filter('range');
         $grid->column('status', __('Status'));
         $grid->disableCreateButton();
         $grid->actions(function ($actions) {
