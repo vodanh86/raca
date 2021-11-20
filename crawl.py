@@ -5,7 +5,7 @@ import time
 
 while True:
     try:
-        data = requests.get("https://market-api.radiocaca.com/nft-sales?pageNo=1&pageSize=100000&sortBy=fixed_price&order=asc&name=&saleType&category&tokenType").json()
+        data = requests.get("https://market-api.radiocaca.com/nft-sales?pageNo=1&pageSize=100000&sortBy=fixed_price&order=asc&name=&saleType&category&tokenType", headers={'User-Agent':'Mozilla/5.0'}).json()
 
         mydb = mysql.connector.connect(
             host="localhost",
@@ -34,9 +34,10 @@ while True:
 
         for i in data["list"]:
             if i["name"].lower() == "metamon":
+                time.sleep(5)
                 print("https://market-api.radiocaca.com/nft-sales/" + str(i["id"]))
                 try:
-                    proper = requests.get("https://market-api.radiocaca.com/nft-sales/" + str(i["id"])).json()["data"]["properties"]
+                    proper = requests.get("https://market-api.radiocaca.com/nft-sales/" + str(i["id"]),headers={'User-Agent':'Mozilla/5.0'}).json()["data"]["properties"]
                 except: 
                     print("error")
                     proper = {}
