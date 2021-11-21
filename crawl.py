@@ -42,7 +42,7 @@ while True:
                     print("error")
                     proper = {}
                     time.sleep(10)
-                val = (i["count"], i["status"], i["fixed_price"], i["name"], i["sale_address"], i["start_time"], i["image_url"], i["end_time"], i["token_id"], i["highest_price"], i["id"], i["sale_type"], "", "", "", "", "", "", "", "", "", "")
+                val = (i["count"], i["status"], i["fixed_price"], i["name"], i["sale_address"], i["start_time"], i["image_url"], i["end_time"], i["token_id"], i["highest_price"], i["id"], i["sale_type"], "", "", "", "", "", "", "", "", "", "", "")
                 if proper:
                     pro = {}
                     sql = """INSERT INTO `raca`.`item`
@@ -67,9 +67,10 @@ while True:
                         `size`,
                         `race`,
                         `courage`,
-                        `score`)
+                        `score`,
+                        `rate`)
                         VALUES
-                        (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                        (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                         ON DUPLICATE KEY UPDATE
                         fixed_price = VALUES(fixed_price),
                         highest_price = VALUES(highest_price),
@@ -82,14 +83,15 @@ while True:
                         size = VALUES(size),
                         race = VALUES(race),
                         courage = VALUES(courage),
-                        score = VALUES(score)
+                        score = VALUES(score),
+                        rate = VALUES(rate)
                         ;"""
                     for j in proper:
                         pro[j["key"].lower()] = j["value"]
                     print(i["id"])
-                    print(pro)
                     val = (i["count"], i["status"], i["fixed_price"], i["name"], i["sale_address"], i["start_time"], i["image_url"], i["end_time"], i["token_id"], i["highest_price"], i["id"], i["sale_type"],
-                        pro["rarity"],pro["luck"],pro["stealth"],pro["level"] if pro["level"] else 0,pro["healthy"] if pro["healthy"] else 0,pro["wisdom"] if pro["wisdom"] else 0,pro["size"] if pro["size"] else 0,pro["race"],pro["courage"],pro["score"])
+                        pro["rarity"],pro["luck"],pro["stealth"],pro["level"] if pro["level"] else 0,pro["healthy"] if pro["healthy"] else 0,pro["wisdom"] if pro["wisdom"] else 0,pro["size"] if pro["size"] else 0,pro["race"],pro["courage"],pro["score"], float(pro["score"]) * 1000/float(i["fixed_price"]))
+                    print(val)
                     mycursor.execute(sql, val)
 
                     mydb.commit()
