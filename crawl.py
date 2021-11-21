@@ -19,6 +19,11 @@ while True:
         for i in data["list"]:
             keep_ids[i["id"]] = 0
         
+        # store total number
+        sql = """INSERT INTO `raca`.`count` (`count`) VALUES (%s);"""
+        mycursor.execute(sql, (len(keep_ids.keys()),))
+        
+        # update value
         mycursor.execute('SELECT id FROM `raca`.`item`')
         delete_ids=[]
         for (row_id,) in mycursor:
