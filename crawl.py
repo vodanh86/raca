@@ -16,6 +16,8 @@ while True:
 
         mycursor = mydb.cursor()
         keep_ids = {}
+        db_ids = {}
+        
         for i in data["list"]:
             keep_ids[i["id"]] = 0
         
@@ -27,8 +29,10 @@ while True:
         mycursor.execute('SELECT id FROM `raca`.`item`')
         delete_ids=[]
         for (row_id,) in mycursor:
+            db_ids[row_id] = 0
             if row_id not in keep_ids:
                 delete_ids.append(str(row_id))
+            
         
         id_list_string = "', '".join(delete_ids)
         delete_query = "delete from `raca`.`item` where id in ('" +id_list_string+"')"
@@ -38,15 +42,14 @@ while True:
         mydb.commit()
 
         for i in data["list"]:
-            if i["name"].lower() == "metamon":
-                time.sleep(5)
+            if i["name"].lower() == "metamon" and i["id"] not in db_ids:
                 print("https://market-api.radiocaca.com/nft-sales/" + str(i["id"]))
                 try:
                     proper = requests.get("https://market-api.radiocaca.com/nft-sales/" + str(i["id"]),headers={'User-Agent':'Mozilla/5.0'}).json()["data"]["properties"]
                 except: 
                     print("error")
                     proper = {}
-                    time.sleep(10)
+                    time.sleep(2)
                 val = (i["count"], i["status"], i["fixed_price"], i["name"], i["sale_address"], i["start_time"], i["image_url"], i["end_time"], i["token_id"], i["highest_price"], i["id"], i["sale_type"], "", "", "", "", "", "", "", "", "", "", "")
                 if proper:
                     pro = {}
