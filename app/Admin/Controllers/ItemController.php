@@ -70,8 +70,8 @@ class ItemController extends AdminController
         ]);
         $grid->column('courage', __('Courage'))->sortable()->filter('range');
         $grid->column('score', __('Score'))->sortable()->filter('range');
-        $grid->column('start_time', __('Rate'))->display(function () {
-            return round($this->score * 1000.0 /$this->fixed_price, 3);
+        $grid->column('rate', __('Rate'))->display(function () {
+            return round($this->rate, 4);
         })->sortable()->filter('range');
         $grid->column('status', __('Status'));
         $grid->disableCreateButton();
