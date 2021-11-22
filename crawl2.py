@@ -29,14 +29,15 @@ while True:
                             `size` = %s,
                             `race` = %s,
                             `courage` = %s,
-                            `score` = %s
+                            `score` = %s,
+                            `rate` = %s
                         WHERE
                             `id` = %s;"""
                 pro = {}
                 for j in proper:
                     pro[j["key"].lower()] = j["value"]
-                print((pro["rarity"], pro["luck"], pro["stealth"], pro["level"] if pro["level"] else 0, pro["healthy"] if pro["healthy"] else 0, pro["wisdom"] if pro["wisdom"] else 0, pro["size"] if pro["size"] else 0, pro["race"],pro["courage"], pro["score"], row[9]))
-                mycursor.execute(sql, (pro["rarity"], pro["luck"], pro["stealth"], pro["level"] if pro["level"] else 0, pro["healthy"] if pro["healthy"] else 0, pro["wisdom"] if pro["wisdom"] else 0, pro["size"] if pro["size"] else 0, pro["race"],pro["courage"], pro["score"], row[9]))
+                print((pro["rarity"], pro["luck"], pro["stealth"], pro["level"] if pro["level"] else 0, pro["healthy"] if pro["healthy"] else 0, pro["wisdom"] if pro["wisdom"] else 0, pro["size"] if pro["size"] else 0, pro["race"],pro["courage"], pro["score"], float(pro["score"]) * 1000/float(row[21]), row[9]))
+                mycursor.execute(sql, (pro["rarity"], pro["luck"], pro["stealth"], pro["level"] if pro["level"] else 0, pro["healthy"] if pro["healthy"] else 0, pro["wisdom"] if pro["wisdom"] else 0, pro["size"] if pro["size"] else 0, pro["race"],pro["courage"], pro["score"], float(pro["score"]) * 1000/float(row[21]), row[9]))
                 mydb.commit()
         except Exception as e:
             print(e)
