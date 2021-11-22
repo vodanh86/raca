@@ -11,10 +11,12 @@ mydb = mysql.connector.connect(
 )
 
 mycursor = mydb.cursor()
-
+skip_ids = [1058078]
 while True:
-    mycursor.execute('SELECT * FROM `raca`.`item` ORDER BY `score` LIMIT 1')
+    mycursor.execute('SELECT * FROM `raca`.`item` ORDER BY `score` LIMIT 2')
     for row in mycursor:
+        if row[9] in skip_ids:
+            continue
         try:
             print("https://market-api.radiocaca.com/nft-sales/" + str(row[9]))
             proper = requests.get("https://market-api.radiocaca.com/nft-sales/" + str(row[9]), headers={'User-Agent':'Mozilla/5.0'}).json()["data"]["properties"]
