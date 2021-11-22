@@ -24,6 +24,7 @@ while True:
         # store total number
         sql = """INSERT INTO `raca`.`count` (`count`) VALUES (%s);"""
         mycursor.execute(sql, (len(keep_ids.keys()),))
+        mydb.commit()
         
         # update value
         mycursor.execute('SELECT id FROM `raca`.`item`')
