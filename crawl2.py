@@ -42,6 +42,10 @@ while True:
                 print((pro["rarity"], pro["luck"], pro["stealth"], pro["level"] if pro["level"] else 0, pro["healthy"] if pro["healthy"] else 0, pro["wisdom"] if pro["wisdom"] else 0, pro["size"] if pro["size"] else 0, pro["race"],pro["courage"], pro["score"], float(pro["score"]) * 1000/float(row[21]), row[9]))
                 mycursor.execute(sql, (pro["rarity"], pro["luck"], pro["stealth"], pro["level"] if pro["level"] else 0, pro["healthy"] if pro["healthy"] else 0, pro["wisdom"] if pro["wisdom"] else 0, pro["size"] if pro["size"] else 0, pro["race"],pro["courage"], pro["score"], float(pro["score"]) * 1000/float(row[21]), row[9]))
                 mydb.commit()
+            else:
+                skip_ids.append(row[9])
+                print("skip: ")
+                print(skip_ids)
         except Exception as e:
             print(e)
     time.sleep(10)
