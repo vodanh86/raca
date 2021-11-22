@@ -33,76 +33,38 @@ while True:
             if row_id not in keep_ids:
                 delete_ids.append(str(row_id))
             
-        
+        #delete old data
         id_list_string = "', '".join(delete_ids)
         delete_query = "delete from `raca`.`item` where id in ('" +id_list_string+"')"
-        print(delete_query)
         mycursor.execute(delete_query)
         print(delete_ids)
         mydb.commit()
 
+        # update new data
+        sql = """INSERT INTO `raca`.`item`
+            (`count`,
+            `status`,
+            `fixed_price`,
+            `name`,
+            `sale_address`,
+            `start_time`,
+            `image_url`,
+            `end_time`,
+            `token_id`,
+            `highest_price`,
+            `id`,
+            `sale_type`)
+            VALUES
+            (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            ON DUPLICATE KEY UPDATE
+            fixed_price = VALUES(fixed_price),
+            highest_price = VALUES(highest_price);"""
+        new_data = []
         for i in data["list"]:
-            if i["name"].lower() == "metamon" and i["id"] not in db_ids:
-                print("https://market-api.radiocaca.com/nft-sales/" + str(i["id"]))
-                try:
-                    proper = requests.get("https://market-api.radiocaca.com/nft-sales/" + str(i["id"]),headers={'User-Agent':'Mozilla/5.0'}).json()["data"]["properties"]
-                except: 
-                    print("error")
-                    proper = {}
-                    time.sleep(2)
-                val = (i["count"], i["status"], i["fixed_price"], i["name"], i["sale_address"], i["start_time"], i["image_url"], i["end_time"], i["token_id"], i["highest_price"], i["id"], i["sale_type"], "", "", "", "", "", "", "", "", "", "", "")
-                if proper:
-                    pro = {}
-                    sql = """INSERT INTO `raca`.`item`
-                        (`count`,
-                        `status`,
-                        `fixed_price`,
-                        `name`,
-                        `sale_address`,
-                        `start_time`,
-                        `image_url`,
-                        `end_time`,
-                        `token_id`,
-                        `highest_price`,
-                        `id`,
-                        `sale_type`,
-                        `rarity`,
-                        `luck`,
-                        `stealth`,
-                        `level`,
-                        `healthy`,
-                        `wishdom`,
-                        `size`,
-                        `race`,
-                        `courage`,
-                        `score`,
-                        `rate`)
-                        VALUES
-                        (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-                        ON DUPLICATE KEY UPDATE
-                        fixed_price = VALUES(fixed_price),
-                        highest_price = VALUES(highest_price),
-                        rarity = VALUES(rarity),
-                        luck = VALUES(luck),
-                        stealth = VALUES(stealth),
-                        level = VALUES(level),
-                        healthy = VALUES(healthy),
-                        wishdom = VALUES(wishdom),
-                        size = VALUES(size),
-                        race = VALUES(race),
-                        courage = VALUES(courage),
-                        score = VALUES(score),
-                        rate = VALUES(rate)
-                        ;"""
-                    for j in proper:
-                        pro[j["key"].lower()] = j["value"]
-                    print(i["id"])
-                    val = (i["count"], i["status"], i["fixed_price"], i["name"], i["sale_address"], i["start_time"], i["image_url"], i["end_time"], i["token_id"], i["highest_price"], i["id"], i["sale_type"],
-                        pro["rarity"],pro["luck"],pro["stealth"],pro["level"] if pro["level"] else 0,pro["healthy"] if pro["healthy"] else 0,pro["wisdom"] if pro["wisdom"] else 0,pro["size"] if pro["size"] else 0,pro["race"],pro["courage"],pro["score"], float(pro["score"]) * 1000/float(i["fixed_price"]))
-                    print(val)
-                    mycursor.execute(sql, val)
-
-                    mydb.commit()
+            if i["name"].lower() == "metamon":
+                new_data.append((i["count"], i["status"], i["fixed_price"], i["name"], i["sale_address"], i["start_time"], i["image_url"], i["end_time"], i["token_id"], i["highest_price"], i["id"], i["sale_type"]))
+        mycursor.executemany(sql, new_data)
+        mydb.commit()
     except Exception as e:
         print(e)
         time.sleep(30) 
