@@ -79,6 +79,7 @@ class ItemController extends AdminController
             $actions->disableDelete();
             $actions->disableEdit();
         });
+        $grid->model()->where('score', '!=', null);
         $grid->model()->orderBy('fixed_price');
 
         return $grid;
