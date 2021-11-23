@@ -70,11 +70,15 @@ while True:
             if i["name"].lower() == "metamon":
                 if i["id"] in db_ids:
                     update_data.append((i["fixed_price"], i["highest_price"], i["id"]))
-                else:
+        	    mycursor.execute(update_sql, (i["fixed_price"], i["highest_price"], i["id"]))
+		    mydb.commit()            
+		    #print("update: " + str(i["id"]))	
+		else:
                     insert_data.append((i["count"], i["status"], i["fixed_price"], i["name"], i["sale_address"], i["start_time"], i["image_url"], i["end_time"], i["token_id"], i["highest_price"], i["id"], i["sale_type"]))
         mycursor.executemany(inser_sql, insert_data)
-        mycursor.executemany(update_sql, update_data)
         mydb.commit()
+        #mycursor.executemany(update_sql, update_data)
+        #mydb.commit()
     except Exception as e:
         print(e)
         time.sleep(30) 
