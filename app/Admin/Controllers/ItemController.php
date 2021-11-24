@@ -39,10 +39,10 @@ class ItemController extends AdminController
         $grid->column('token_id', __('Token id'))->filter('like');
         $grid->column('image_url', __('Image url'))->image("",50,50);
         $grid->column('fixed_price', __('Price (RACA)'))->display(function ($title) {
-            return number_format($title);
+            return number_format($title, 0);
         })->sortable()->filter('range');
         $grid->column('highest_price', __('Price (USD)'))->display(function () use($price) {
-            return number_format($price * $this->fixed_price)." $";
+            return number_format($price * $this->fixed_price, 0)." $";
         })->sortable()->filter('range');
         $grid->id('Mua')->display(function($item){
             return "<span class='label label-success'><a target='_blank' href='https://market.radiocaca.com/#/market-place/".$item."' style='color:white'>Mua</a></span>";
