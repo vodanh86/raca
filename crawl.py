@@ -5,14 +5,14 @@ import time
 
 mydb = mysql.connector.connect(
     host="localhost",
-    user="root",
-    password="123456",
+    user="thecup",
+    password="password",
     database="raca"
 )
 mycursor = mydb.cursor()
 
 def getEgg(mydb, mycursor):
-    data = requests.get("https://market-api.radiocaca.com/nft-sales?pageNo=1&pageSize=100000&sortBy=single_price&order=asc&name=&saleType&category=14&tokenType", headers={'User-Agent':'Mozilla/5.0'}).json()
+    data = requests.get("https://market-api.radiocaca.com/nft-sales?pageNo=1&pageSize=2000000&sortBy=single_price&order=asc&name=&saleType&category=17&tokenType", headers={'User-Agent':'Mozilla/5.0'}).json()
     delete_query = "delete from `raca`.`egg`"
     mycursor.execute(delete_query)
     mydb.commit()
