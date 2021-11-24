@@ -37,6 +37,7 @@ class ItemController extends AdminController
         $grid = new Grid(new Item());
 
         $grid->column('token_id', __('Token id'))->filter('like');
+        $grid->column('start_time', __('Start time'))->date('l jS \of F Y h:i:s A')->sortable()->filter('range');
         $grid->column('image_url', __('Image url'))->image("",50,50);
         $grid->column('fixed_price', __('Price (RACA)'))->display(function ($title) {
             return number_format($title, 0);

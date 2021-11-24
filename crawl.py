@@ -2,6 +2,7 @@ import requests
 import json
 import mysql.connector
 import time
+from datetime import datetime
 
 mydb = mysql.connector.connect(
     host="localhost",
@@ -86,7 +87,8 @@ def getMetamon(mydb, mycursor):
     # update new data
     update_sql = """UPDATE `raca`.`item`
         SET `fixed_price` = %s,
-        `highest_price` = %s
+        `highest_price` = %s,
+        `start_time` = %s
         WHERE
         `id` = %s;"""
     insert_data = []
@@ -94,12 +96,12 @@ def getMetamon(mydb, mycursor):
     for i in data["list"]:
         if i["name"].lower() == "metamon":
             if i["id"] in db_ids:
-                update_data.append((i["fixed_price"], i["highest_price"], i["id"]))
-                mycursor.execute(update_sql, (i["fixed_price"], i["highest_price"], i["id"]))
+                update_data.append((i["fixed_price"], i["highest_price"], datetime.fromtimestamp(i["start_time"]), i["id"]))
+                mycursor.execute(update_sql, (i["fixed_price"], i["highest_price"], datetime.fromtimestamp(i["start_time"]), i["id"]))
                 mydb.commit()            
                 #print("update: " + str(i["id"]))	
             else:
-                insert_data.append((i["count"], i["status"], i["fixed_price"], i["name"], i["sale_address"], i["start_time"], i["image_url"], i["end_time"], i["token_id"], i["highest_price"], i["id"], i["sale_type"]))
+                insert_data.append((i["count"], i["status"], i["fixed_price"], i["name"], i["sale_address"], datetime.fromtimestamp(i["start_time"]), i["image_url"], i["end_time"], i["token_id"], i["highest_price"], i["id"], i["sale_type"]))
     mycursor.executemany(inser_sql, insert_data)
     mydb.commit()
     
