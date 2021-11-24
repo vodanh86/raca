@@ -14,7 +14,7 @@ mycursor = mydb.cursor()
 skip_ids = [1058078]
 while True:
     format_strings = ','.join(['%s'] * len(skip_ids))
-    mycursor.execute('SELECT * FROM `raca`.`item` WHERE `id` NOT IN (%s) ORDER BY `score` LIMIT 1' % format_strings, tuple(skip_ids))
+    mycursor.execute('SELECT * FROM `raca`.`item` WHERE `id` NOT IN (%s) ORDER BY `score`, `fixed_price` LIMIT 1' % format_strings, tuple(skip_ids))
     for row in mycursor:
         if row[9] in skip_ids:
             continue
