@@ -19,6 +19,7 @@ while True:
         if row[9] in skip_ids:
             continue
         try:
+            print(i)
             print("https://market-api.radiocaca.com/nft-sales/" + str(row[9]))
             proper = requests.get("https://market-api.radiocaca.com/nft-sales/" + str(row[9]), headers={'User-Agent':'Mozilla/5.0'}).json()["data"]["properties"]
             if proper:
