@@ -5,12 +5,39 @@ import time
 
 mydb = mysql.connector.connect(
     host="localhost",
-    user="thecup",
-    password="password",
+    user="root",
+    password="123456",
     database="raca"
 )
 mycursor = mydb.cursor()
 
+def getEgg(mydb, mycursor):
+    data = requests.get("https://market-api.radiocaca.com/nft-sales?pageNo=1&pageSize=100000&sortBy=single_price&order=asc&name=&saleType&category=14&tokenType", headers={'User-Agent':'Mozilla/5.0'}).json()
+    delete_query = "delete from `raca`.`egg`"
+    mycursor.execute(delete_query)
+    mydb.commit()
+    
+    # insert new data
+    inser_sql = """INSERT INTO `raca`.`egg`
+        (`count`,
+        `status`,
+        `fixed_price`,
+        `name`,
+        `image_url`,
+        `token_id`,
+        `highest_price`,
+        `id`)
+        VALUES
+        (%s, %s, %s, %s, %s, %s, %s, %s)"""
+        
+    insert_data = []
+    for i in data["list"]:
+        if i["name"].lower() == "metamon egg":
+            insert_data.append((i["count"], i["status"], i["fixed_price"], i["name"], i["image_url"], i["token_id"], i["highest_price"], i["id"]))
+            
+    mycursor.executemany(inser_sql, insert_data)
+    mydb.commit()
+    
 def getMetamon(mydb, mycursor):
     data = requests.get("https://market-api.radiocaca.com/nft-sales?pageNo=1&pageSize=100000&sortBy=fixed_price&order=asc&name=&saleType&category&tokenType", headers={'User-Agent':'Mozilla/5.0'}).json()
     keep_ids = {}
@@ -79,6 +106,7 @@ def getMetamon(mydb, mycursor):
 while True:
     try:
         getMetamon(mydb, mycursor)
+        getEgg(mydb, mycursor)
         time.sleep(20) 
         #mycursor.executemany(update_sql, update_data)
         #mydb.commit()
