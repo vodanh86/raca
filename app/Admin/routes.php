@@ -14,4 +14,6 @@ Route::group([
     $router->get('/', 'HomeController@index')->name('home');
     $router->resource('items', ItemController::class);
     $router->resource('eggs', EggController::class);
+    $router->resource('mowas', MowaController::class);
+
 });
