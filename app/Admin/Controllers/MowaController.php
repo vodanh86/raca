@@ -31,15 +31,20 @@ class MowaController extends AdminController
             return "<span class='label label-success'><a target='_blank' href='https://dapp.moniwar.io/nft/market-detail?id=".$item."' style='color:white'>Mua</a></span>";
         });
         $grid->column('name', __('Name'))->sortable()->filter('like');
-        $grid->column('icon', __('Icon'))->image("",50,50);
+        $grid->column('icon', __('Icon'))->image("",60,60);
         $grid->column('price', __('Price'))->display(function ($title) {
             return number_format($title, 0);
         })->sortable()->filter('range');
-        $grid->column('type', __('Type'))->sortable()->filter('range');
+        $grid->column('type', __('Type'))->sortable()->filter('like');
         $grid->column('level', __('Level'))->sortable()->filter('range');
         $grid->column('start', __('Start'))->sortable()->filter('range');
         $grid->column('skill_level', __('Skill level'))->sortable()->filter('range');
-
+        $grid->disableCreateButton();
+        $grid->actions(function ($actions) {
+            $actions->disableDelete();
+            $actions->disableEdit();
+        });
+        $grid->model()->orderBy('price');
         return $grid;
     }
 
