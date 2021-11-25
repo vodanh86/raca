@@ -26,17 +26,19 @@ class MowaController extends AdminController
     {
         $grid = new Grid(new Mowa());
 
-        $grid->column('id', __('Id'));
         $grid->column('token_id', __('Token id'));
-        $grid->column('nft_id', __('Nft id'));
-        $grid->column('name', __('Name'));
-        $grid->column('icon', __('Icon'));
-        $grid->column('price', __('Price'));
-        $grid->column('type', __('Type'));
-        $grid->column('level', __('Level'));
-        $grid->column('start', __('Start'));
-        $grid->column('skill_level', __('Skill level'));
-        $grid->column('mowa_id', __('Mowa id'));
+        $grid->mowa_id('Mua')->display(function($item){
+            return "<span class='label label-success'><a target='_blank' href='https://dapp.moniwar.io/nft/market-detail?id=".$item."' style='color:white'>Mua</a></span>";
+        });
+        $grid->column('name', __('Name'))->sortable()->filter('like');
+        $grid->column('icon', __('Icon'))->image("",50,50);
+        $grid->column('price', __('Price'))->display(function ($title) {
+            return number_format($title, 0);
+        })->sortable()->filter('range');
+        $grid->column('type', __('Type'))->sortable()->filter('range');
+        $grid->column('level', __('Level'))->sortable()->filter('range');
+        $grid->column('start', __('Start'))->sortable()->filter('range');
+        $grid->column('skill_level', __('Skill level'))->sortable()->filter('range');
 
         return $grid;
     }
