@@ -37,7 +37,6 @@ class ItemController extends AdminController
         $grid = new Grid(new Item());
 
         $grid->column('token_id', __('Token id'))->filter('like');
-        $grid->column('start_time', __('Start time'))->date('l jS \of F Y h:i:s A')->sortable()->filter('range');
         $grid->column('image_url', __('Image url'))->image("",50,50);
         $grid->column('fixed_price', __('Price (RACA)'))->display(function ($title) {
             return number_format($title, 0);
@@ -100,9 +99,7 @@ class ItemController extends AdminController
         $show->field('status', __('Status'));
         $show->field('name', __('Name'));
         $show->field('sale_address', __('Sale address'));
-        $show->field('start_time', __('Start time'));
         $show->field('image_url', __('Image url'));
-        $show->field('end_time', __('End time'));
         $show->field('token_id', __('Token id'));
         $show->field('highest_price', __('Highest price'));
         $show->field('id', __('Id'));
@@ -135,9 +132,7 @@ class ItemController extends AdminController
         $form->text('status', __('Status'));
         $form->text('name', __('Name'));
         $form->text('sale_address', __('Sale address'));
-        $form->number('start_time', __('Start time'));
         $form->text('image_url', __('Image url'));
-        $form->number('end_time', __('End time'));
         $form->text('token_id', __('Token id'));
         $form->text('highest_price', __('Highest price'));
         $form->text('sale_type', __('Sale type'));
